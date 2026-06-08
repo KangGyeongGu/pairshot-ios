@@ -59,6 +59,8 @@
 	<string>$(ADUNIT_ID_APP_OPEN)</string>
 	<key>CouponApiBaseUrl</key>
 	<string>https://$(COUPON_API_HOST)</string>
+	<key>WebBaseUrl</key>
+	<string>https://$(WEB_BASE_HOST)</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
