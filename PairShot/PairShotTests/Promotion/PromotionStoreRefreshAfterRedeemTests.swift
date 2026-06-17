@@ -12,7 +12,6 @@ struct PromotionStoreRefreshAfterRedeemTests {
         let expiry = Self.frozenNow.addingTimeInterval(60 * 60 * 24 * 30)
         let snapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: expiry),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let fetcher = CountingFetcher(snapshots: [snapshot])
         let store = PromotionStore(
@@ -29,33 +28,10 @@ struct PromotionStoreRefreshAfterRedeemTests {
     }
 
     @Test
-    func `adFreeIsActive 가 첫 refresh 후 true 면 retry skip (fetch 1회만)`() async {
-        let defaults = Self.makeIsolatedDefaults()
-        let expiry = Self.frozenNow.addingTimeInterval(60 * 60 * 24 * 30)
-        let snapshot = MembershipSnapshot(
-            pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: true, expiresAt: expiry),
-        )
-        let fetcher = CountingFetcher(snapshots: [snapshot])
-        let store = PromotionStore(
-            fetcher: fetcher,
-            deviceHashProvider: DeviceHashProvider(identifierResolver: { "device" }),
-            defaults: defaults,
-            clock: { Self.frozenNow },
-        )
-
-        await store.refreshAfterRedeem(retryDelay: .zero)
-
-        #expect(await fetcher.callCount == 1)
-        #expect(store.adFreeIsActive)
-    }
-
-    @Test
-    func `둘 다 inactive 면 retry — fetch 가 정확히 2회 호출`() async {
+    func `pro inactive 면 retry — fetch 가 정확히 2회 호출`() async {
         let defaults = Self.makeIsolatedDefaults()
         let inactiveSnapshot = MembershipSnapshot(
             pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let fetcher = CountingFetcher(snapshots: [inactiveSnapshot, inactiveSnapshot])
         let store = PromotionStore(
@@ -69,20 +45,17 @@ struct PromotionStoreRefreshAfterRedeemTests {
 
         #expect(await fetcher.callCount == 2)
         #expect(!store.proIsActive)
-        #expect(!store.adFreeIsActive)
     }
 
     @Test
-    func `둘 다 inactive 후 2차 retry 에서 active 가 되면 상태 갱신`() async {
+    func `pro inactive 후 2차 retry 에서 active 가 되면 상태 갱신`() async {
         let defaults = Self.makeIsolatedDefaults()
         let inactiveSnapshot = MembershipSnapshot(
             pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let expiry = Self.frozenNow.addingTimeInterval(3600)
         let activeSnapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: expiry),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let fetcher = CountingFetcher(snapshots: [inactiveSnapshot, activeSnapshot])
         let store = PromotionStore(
@@ -104,7 +77,6 @@ struct PromotionStoreRefreshAfterRedeemTests {
         let defaults = Self.makeIsolatedDefaults()
         let inactiveSnapshot = MembershipSnapshot(
             pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let fetcher = CountingFetcher(snapshots: [inactiveSnapshot, inactiveSnapshot, inactiveSnapshot])
         let store = PromotionStore(
@@ -134,7 +106,6 @@ struct PromotionStoreRefreshAfterRedeemTests {
 
         #expect(await fetcher.callCount == 2)
         #expect(!store.proIsActive)
-        #expect(!store.adFreeIsActive)
     }
 
     @Test
@@ -142,7 +113,6 @@ struct PromotionStoreRefreshAfterRedeemTests {
         let defaults = Self.makeIsolatedDefaults()
         let inactiveSnapshot = MembershipSnapshot(
             pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let fetcher = CountingFetcher(snapshots: [inactiveSnapshot, inactiveSnapshot])
         let store = PromotionStore(

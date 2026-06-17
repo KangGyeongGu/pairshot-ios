@@ -143,6 +143,7 @@ After 촬영 시 Before 사진을 반투명 오버레이로 뷰파인더에 표�
 
 | 버전 | 날짜 | Build | 주요 내용 | 노트 |
 |------|------|-------|-----------|------|
+| [v1.3.0](docs/releases/v1.3.0.md) | 2026-06-17 | 1 | 결제 실패(재시도·유예) 구독 Pro 만료 정상화 · 첫 실행 Paywall 네이티브 닫기 버튼 추가 · adFree 전용 프로모션 차원 제거 | [→](docs/releases/v1.3.0.md) |
 | [v1.2.3](docs/releases/v1.2.3.md) | 2026-06-08 | 1 | 정책·마케팅·쿠폰 API 호스트를 `pairshot.nomadlabs.kr` 로 이전 · 정책 URL 베이스를 xcconfig 주입으로 단일 출처화 | [→](docs/releases/v1.2.3.md) |
 | [v1.2.2](docs/releases/v1.2.2.md) | 2026-06-01 | 1 | 결제 후 paywall 자동 닫힘·광고 즉시 제거 · Paywall 텍스트 크기 앱 정책 강제 · 설정 텍스트 크기·테마 즉시 반영 | [→](docs/releases/v1.2.2.md) |
 | [v1.2.1](docs/releases/v1.2.1.md) | 2026-05-30 | 1 | 첫 실행 Paywall 무료 진입로 가독성 강조·약관 안내 순서 정리 · 카메라 진입 SF Symbol 콘솔 경고 4건 제거 | [→](docs/releases/v1.2.1.md) |

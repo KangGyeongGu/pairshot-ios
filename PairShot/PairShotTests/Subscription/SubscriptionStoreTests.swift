@@ -102,15 +102,15 @@ struct SubscriptionStatusPredicateTests {
     }
 
     @Test
-    func `Grace period renewal state with known product is pro`() {
+    func `Grace period renewal state is not pro`() {
         let snapshot = SubscriptionStatusSnapshot(productID: ProductIDs.proMonthly, state: .inGracePeriod)
-        #expect(SubscriptionStore.isActiveProStatus(snapshot))
+        #expect(!SubscriptionStore.isActiveProStatus(snapshot))
     }
 
     @Test
-    func `Billing retry renewal state with known product is pro`() {
+    func `Billing retry renewal state is not pro`() {
         let snapshot = SubscriptionStatusSnapshot(productID: ProductIDs.proAnnual, state: .inBillingRetryPeriod)
-        #expect(SubscriptionStore.isActiveProStatus(snapshot))
+        #expect(!SubscriptionStore.isActiveProStatus(snapshot))
     }
 
     @Test
@@ -151,18 +151,18 @@ struct SubscriptionComputeIsProTests {
     }
 
     @Test
-    func `computeIsPro returns true when only status is in grace period (entitlement absent)`() {
+    func `computeIsPro returns false when only status is in grace period (entitlement absent)`() {
         let status = SubscriptionStatusSnapshot(productID: ProductIDs.proMonthly, state: .inGracePeriod)
         let result = SubscriptionStore.computeIsPro(
             entitlements: [],
             statuses: [status],
             now: now,
         )
-        #expect(result)
+        #expect(!result)
     }
 
     @Test
-    func `computeIsPro returns true for billing retry status when entitlement expired`() {
+    func `computeIsPro returns false for billing retry status when entitlement expired`() {
         let entitlement = EntitlementSnapshot(
             productID: ProductIDs.proMonthly,
             revocationDate: nil,
@@ -174,7 +174,7 @@ struct SubscriptionComputeIsProTests {
             statuses: [status],
             now: now,
         )
-        #expect(result)
+        #expect(!result)
     }
 
     @Test

@@ -27,21 +27,19 @@ struct PaywallView: View {
         .subscriptionStorePolicyDestination(url: PaywallURLs.privacy, for: .privacyPolicy)
         .subscriptionStorePolicyDestination(url: PaywallURLs.terms, for: .termsOfService)
         .overlay(alignment: .topTrailing) {
-            if mode == .upgrade {
-                Button {
-                    onCompletion()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 32))
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.secondary)
-                        .padding(.top, 12)
-                        .padding(.trailing, 16)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(String(localized: "paywall_close"))
+            Button {
+                onCompletion()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 32))
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 12)
+                    .padding(.trailing, 16)
+                    .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "paywall_close"))
         }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 8) {

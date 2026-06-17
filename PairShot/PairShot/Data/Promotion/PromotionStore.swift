@@ -8,8 +8,6 @@ final class PromotionStore {
 
     private(set) var proIsActive: Bool
     private(set) var proExpiresAt: Date?
-    private(set) var adFreeIsActive: Bool
-    private(set) var adFreeExpiresAt: Date?
 
     private let fetcher: any PromotionFetching
     private let deviceHashProvider: DeviceHashProvider
@@ -30,8 +28,6 @@ final class PromotionStore {
         let now = clock()
         proIsActive = Self.resolveActive(state: snapshot.pro, now: now)
         proExpiresAt = snapshot.pro.expiresAt
-        adFreeIsActive = Self.resolveActive(state: snapshot.adFree, now: now)
-        adFreeExpiresAt = snapshot.adFree.expiresAt
     }
 
     func refresh() async {
@@ -40,14 +36,12 @@ final class PromotionStore {
         let now = clock()
         proIsActive = Self.resolveActive(state: snapshot.pro, now: now)
         proExpiresAt = snapshot.pro.expiresAt
-        adFreeIsActive = Self.resolveActive(state: snapshot.adFree, now: now)
-        adFreeExpiresAt = snapshot.adFree.expiresAt
         Self.saveSnapshot(snapshot, to: defaults)
     }
 
     func refreshAfterRedeem(retryDelay: Duration = .seconds(2)) async {
         await refresh()
-        if proIsActive || adFreeIsActive { return }
+        if proIsActive { return }
         try? await Task.sleep(for: retryDelay)
         await refresh()
     }

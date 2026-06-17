@@ -51,17 +51,8 @@ struct SubscriptionSettingsSection: View {
     }
 
     private var membershipSublineText: String? {
-        if membership.proIsActive {
-            return Self.expirationSublineText(date: membership.proExpiresAt)
-        }
-        if membership.adFreeIsActive {
-            let active = String(localized: "settings_subscription_status_ad_free_active")
-            if let date = membership.adFreeExpiresAt {
-                return "\(active) — \(Self.formattedExpirationText(date: date))"
-            }
-            return "\(active) — \(String(localized: "settings_subscription_membership_permanent"))"
-        }
-        return nil
+        guard membership.proIsActive else { return nil }
+        return Self.expirationSublineText(date: membership.proExpiresAt)
     }
 
     private var promotionCodeFooterLink: some View {

@@ -8,11 +8,9 @@ nonisolated struct MembershipSnapshot: Equatable, Codable {
 
     static let empty = Self(
         pro: EntitlementState(active: false, expiresAt: nil),
-        adFree: EntitlementState(active: false, expiresAt: nil),
     )
 
     let pro: EntitlementState
-    let adFree: EntitlementState
 }
 
 nonisolated protocol PromotionFetching: Sendable {
@@ -57,17 +55,12 @@ private nonisolated struct PromotionResponseDto: Decodable {
     }
 
     let pro: EntitlementStateDto
-    let adFree: EntitlementStateDto
 
     func toSnapshot() -> MembershipSnapshot {
         MembershipSnapshot(
             pro: MembershipSnapshot.EntitlementState(
                 active: pro.active,
                 expiresAt: pro.expiresAt,
-            ),
-            adFree: MembershipSnapshot.EntitlementState(
-                active: adFree.active,
-                expiresAt: adFree.expiresAt,
             ),
         )
     }

@@ -5,11 +5,10 @@ enum AdSuppression {
         subscriptionStore: SubscriptionStore?,
         tutorialCoordinator: TutorialCoordinator? = nil,
     ) -> Bool {
-        let promotionAdFree = promotionStore?.adFreeIsActive ?? false
         let promotionPro = promotionStore?.proIsActive ?? false
         let subscriptionPro = subscriptionStore?.isPro ?? false
         let tutorial = tutorialCoordinator?.isActive ?? false
-        return promotionAdFree || promotionPro || subscriptionPro || tutorial
+        return promotionPro || subscriptionPro || tutorial
     }
 
     static func isSuppressed(
@@ -17,27 +16,24 @@ enum AdSuppression {
         tutorialCoordinator: TutorialCoordinator? = nil,
     ) -> Bool {
         isSuppressed(
-            isAdFree: membership.adFreeIsActive,
             isPro: membership.proIsActive,
             tutorialActive: tutorialCoordinator?.isActive ?? false,
         )
     }
 
     static func isSuppressed(
-        isAdFree: Bool,
         isPro: Bool,
         tutorialActive: Bool = false,
     ) -> Bool {
-        isAdFree || isPro || tutorialActive
+        isPro || tutorialActive
     }
 
     static func isLoadSuppressed(
         promotionStore: PromotionStore?,
         subscriptionStore: SubscriptionStore?,
     ) -> Bool {
-        let promotionAdFree = promotionStore?.adFreeIsActive ?? false
         let promotionPro = promotionStore?.proIsActive ?? false
         let subscriptionPro = subscriptionStore?.isPro ?? false
-        return promotionAdFree || promotionPro || subscriptionPro
+        return promotionPro || subscriptionPro
     }
 }

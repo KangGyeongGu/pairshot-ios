@@ -5,31 +5,19 @@ import Testing
 @MainActor
 struct AdSuppressionMergeTests {
     @Test
-    func `Both flags false → ads shown (suppression = false)`() {
-        #expect(AdSuppression.isSuppressed(isAdFree: false, isPro: false) == false)
+    func `Pro false → ads shown (suppression = false)`() {
+        #expect(AdSuppression.isSuppressed(isPro: false) == false)
     }
 
     @Test
-    func `Coupon active only → ads suppressed`() {
-        #expect(AdSuppression.isSuppressed(isAdFree: true, isPro: false) == true)
-    }
-
-    @Test
-    func `Pro subscription only → ads suppressed`() {
-        #expect(AdSuppression.isSuppressed(isAdFree: false, isPro: true) == true)
-    }
-
-    @Test
-    func `Both coupon and Pro → ads suppressed`() {
-        #expect(AdSuppression.isSuppressed(isAdFree: true, isPro: true) == true)
+    func `Pro active → ads suppressed`() {
+        #expect(AdSuppression.isSuppressed(isPro: true) == true)
     }
 
     @Test
     func `튜토리얼 활성 시 광고 단일 진리값으로 통합 차단`() {
-        let coord = TutorialCoordinator()
-        coord.start()
-        #expect(AdSuppression.isSuppressed(isAdFree: false, isPro: false, tutorialActive: true) == true)
-        #expect(AdSuppression.isSuppressed(isAdFree: false, isPro: false, tutorialActive: false) == false)
+        #expect(AdSuppression.isSuppressed(isPro: false, tutorialActive: true) == true)
+        #expect(AdSuppression.isSuppressed(isPro: false, tutorialActive: false) == false)
     }
 
     @Test
