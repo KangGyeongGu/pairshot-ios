@@ -105,7 +105,7 @@ final class SubscriptionStore {
     nonisolated static func isActiveProStatus(_ status: SubscriptionStatusSnapshot) -> Bool {
         guard ProductIDs.allProSet.contains(status.productID) else { return false }
         switch status.state {
-            case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
+            case .subscribed:
                 return true
 
             default:
