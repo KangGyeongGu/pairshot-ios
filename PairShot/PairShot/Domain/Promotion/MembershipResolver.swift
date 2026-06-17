@@ -5,8 +5,6 @@ struct MembershipInputs: Equatable {
     let subscriptionExpiresAt: Date?
     let promotionProIsActive: Bool
     let promotionProExpiresAt: Date?
-    let promotionAdFreeIsActive: Bool
-    let promotionAdFreeExpiresAt: Date?
 }
 
 @MainActor
@@ -25,20 +23,6 @@ enum MembershipResolver {
         proExpiresAt(inputs: snapshot(subscription: subscription, promotion: promotion))
     }
 
-    static func adFreeIsActive(
-        subscription: SubscriptionStore,
-        promotion: PromotionStore,
-    ) -> Bool {
-        adFreeIsActive(inputs: snapshot(subscription: subscription, promotion: promotion))
-    }
-
-    static func adFreeExpiresAt(
-        subscription: SubscriptionStore,
-        promotion: PromotionStore,
-    ) -> Date? {
-        adFreeExpiresAt(inputs: snapshot(subscription: subscription, promotion: promotion))
-    }
-
     private static func snapshot(
         subscription: SubscriptionStore,
         promotion: PromotionStore,
@@ -48,8 +32,6 @@ enum MembershipResolver {
             subscriptionExpiresAt: subscription.proExpiresAt,
             promotionProIsActive: promotion.proIsActive,
             promotionProExpiresAt: promotion.proExpiresAt,
-            promotionAdFreeIsActive: promotion.adFreeIsActive,
-            promotionAdFreeExpiresAt: promotion.adFreeExpiresAt,
         )
     }
 }
@@ -65,21 +47,6 @@ extension MembershipResolver {
             subscriptionExpiry: inputs.subscriptionExpiresAt,
             promotionActive: inputs.promotionProIsActive,
             promotionExpiry: inputs.promotionProExpiresAt,
-        )
-    }
-
-    nonisolated static func adFreeIsActive(inputs: MembershipInputs) -> Bool {
-        proIsActive(inputs: inputs) || inputs.promotionAdFreeIsActive
-    }
-
-    nonisolated static func adFreeExpiresAt(inputs: MembershipInputs) -> Date? {
-        let proActive = proIsActive(inputs: inputs)
-        let proExpiry = proExpiresAt(inputs: inputs)
-        return latestExpiry(
-            subscriptionActive: proActive,
-            subscriptionExpiry: proExpiry,
-            promotionActive: inputs.promotionAdFreeIsActive,
-            promotionExpiry: inputs.promotionAdFreeExpiresAt,
         )
     }
 

@@ -6212,23 +6212,6 @@
         }
       }
     },
-    "settings_subscription_status_ad_free_active" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ad-free active"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "광고 제거 중"
-          }
-        }
-      }
-    },
     "settings_subscription_status_free" : {
       "extractionState" : "manual",
       "localizations" : {

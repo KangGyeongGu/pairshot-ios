@@ -21,20 +21,6 @@ final class Membership {
         )
     }
 
-    var adFreeIsActive: Bool {
-        MembershipResolver.adFreeIsActive(
-            subscription: subscriptionStore,
-            promotion: promotionStore,
-        )
-    }
-
-    var adFreeExpiresAt: Date? {
-        MembershipResolver.adFreeExpiresAt(
-            subscription: subscriptionStore,
-            promotion: promotionStore,
-        )
-    }
-
     init(subscriptionStore: SubscriptionStore, promotionStore: PromotionStore) {
         self.subscriptionStore = subscriptionStore
         self.promotionStore = promotionStore

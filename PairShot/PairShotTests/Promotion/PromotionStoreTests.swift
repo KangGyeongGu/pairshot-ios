@@ -16,40 +16,15 @@ struct PromotionStoreTests {
         )
 
         #expect(store.proIsActive == false)
-        #expect(store.adFreeIsActive == false)
         #expect(store.proExpiresAt == nil)
-        #expect(store.adFreeExpiresAt == nil)
     }
 
     @Test
-    func `Ad-free promotion only: refresh sets adFreeIsActive but not proIsActive`() async {
-        let defaults = Self.makeIsolatedDefaults()
-        let expiry = Self.frozenNow.addingTimeInterval(60 * 60 * 24 * 30)
-        let snapshot = MembershipSnapshot(
-            pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: true, expiresAt: expiry),
-        )
-        let store = PromotionStore(
-            fetcher: StubFetcher(snapshot: snapshot),
-            deviceHashProvider: DeviceHashProvider(identifierResolver: { "device-id" }),
-            defaults: defaults,
-            clock: { Self.frozenNow },
-        )
-
-        await store.refresh()
-
-        #expect(store.proIsActive == false)
-        #expect(store.adFreeIsActive == true)
-        #expect(store.adFreeExpiresAt == expiry)
-    }
-
-    @Test
-    func `Pro promotion: refresh sets proIsActive (and adFree mirror inactive)`() async {
+    func `Pro promotion: refresh sets proIsActive`() async {
         let defaults = Self.makeIsolatedDefaults()
         let expiry = Self.frozenNow.addingTimeInterval(60 * 60 * 24 * 365)
         let snapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: expiry),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let store = PromotionStore(
             fetcher: StubFetcher(snapshot: snapshot),
@@ -62,7 +37,6 @@ struct PromotionStoreTests {
 
         #expect(store.proIsActive == true)
         #expect(store.proExpiresAt == expiry)
-        #expect(store.adFreeIsActive == false)
     }
 
     @Test
@@ -70,7 +44,6 @@ struct PromotionStoreTests {
         let defaults = Self.makeIsolatedDefaults()
         let snapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: nil),
-            adFree: .init(active: false, expiresAt: nil),
         )
         let store = PromotionStore(
             fetcher: StubFetcher(snapshot: snapshot),
@@ -96,7 +69,6 @@ struct PromotionStoreTests {
         await store.refresh()
 
         #expect(store.proIsActive == false)
-        #expect(store.adFreeIsActive == false)
     }
 
     @Test
@@ -105,7 +77,6 @@ struct PromotionStoreTests {
         let pastExpiry = Self.frozenNow.addingTimeInterval(-60 * 60 * 24)
         let snapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: pastExpiry),
-            adFree: .init(active: true, expiresAt: pastExpiry),
         )
         let firstStore = PromotionStore(
             fetcher: StubFetcher(snapshot: snapshot),
@@ -123,9 +94,7 @@ struct PromotionStoreTests {
         )
 
         #expect(reload.proIsActive == false)
-        #expect(reload.adFreeIsActive == false)
         #expect(reload.proExpiresAt == pastExpiry)
-        #expect(reload.adFreeExpiresAt == pastExpiry)
     }
 
     @Test
@@ -134,7 +103,6 @@ struct PromotionStoreTests {
         let pastExpiry = Self.frozenNow.addingTimeInterval(-3600)
         let snapshot = MembershipSnapshot(
             pro: .init(active: true, expiresAt: pastExpiry),
-            adFree: .init(active: true, expiresAt: pastExpiry),
         )
         let store = PromotionStore(
             fetcher: StubFetcher(snapshot: snapshot),
@@ -146,7 +114,6 @@ struct PromotionStoreTests {
         await store.refresh()
 
         #expect(store.proIsActive == false)
-        #expect(store.adFreeIsActive == false)
     }
 
     @Test
@@ -154,8 +121,7 @@ struct PromotionStoreTests {
         let defaults = Self.makeIsolatedDefaults()
         let expiry = Self.frozenNow.addingTimeInterval(60 * 60 * 24 * 7)
         let snapshot = MembershipSnapshot(
-            pro: .init(active: false, expiresAt: nil),
-            adFree: .init(active: true, expiresAt: expiry),
+            pro: .init(active: true, expiresAt: expiry),
         )
         let firstStore = PromotionStore(
             fetcher: StubFetcher(snapshot: snapshot),
@@ -172,8 +138,8 @@ struct PromotionStoreTests {
             clock: { Self.frozenNow },
         )
 
-        #expect(secondStore.adFreeIsActive == true)
-        #expect(secondStore.adFreeExpiresAt == expiry)
+        #expect(secondStore.proIsActive == true)
+        #expect(secondStore.proExpiresAt == expiry)
     }
 
     private static func makeIsolatedDefaults() -> UserDefaults {
