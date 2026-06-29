@@ -1,5 +1,6 @@
-![Frame.png](docs/readme/project-banner.png)
 <div align="center">
+
+<img src="docs/readme/project-banner.png" alt="PairShot" width="100%" />
 
 # PairShot iOS
 
@@ -139,6 +140,7 @@ BEFORE 스트립의 카드 별 고정 아이콘으로 표시하며, 카메라 �
 
 | 버전 | 날짜 | Build | 주요 내용 | 노트 |
 |------|------|-------|-----------|------|
+| [v1.3.1](docs/releases/v1.3.1.md) | 2026-06-29 | 1 | 종횡비 다른 전후 사진 합성 50:50 분할 정상화 · AFTER 스트립 카드에 가로/세로 촬영 방향 아이콘 추가 | [→](docs/releases/v1.3.1.md) |
 | [v1.3.0](docs/releases/v1.3.0.md) | 2026-06-17 | 1 | 결제 실패(재시도·유예) 구독 Pro 만료 정상화 · 첫 실행 Paywall 네이티브 닫기 버튼 추가 · adFree 전용 프로모션 차원 제거 | [→](docs/releases/v1.3.0.md) |
 | [v1.2.3](docs/releases/v1.2.3.md) | 2026-06-08 | 1 | 정책·마케팅·쿠폰 API 호스트를 `pairshot.nomadlabs.kr` 로 이전 · 정책 URL 베이스를 xcconfig 주입으로 단일 출처화 | [→](docs/releases/v1.2.3.md) |
 | [v1.2.2](docs/releases/v1.2.2.md) | 2026-06-01 | 1 | 결제 후 paywall 자동 닫힘·광고 즉시 제거 · Paywall 텍스트 크기 앱 정책 강제 · 설정 텍스트 크기·테마 즉시 반영 | [→](docs/releases/v1.2.2.md) |
