@@ -1,45 +1,22 @@
+![Frame.png](docs/readme/project-banner.png)
 <div align="center">
-
-<img src="./docs/readme/ic_readme.png" alt="PairShot" width="120" style="border-radius: 24px;" />
 
 # PairShot iOS
 
 **Before·After 촬영 및 관리 애플리케이션**
 
-**[🌐 웹사이트 바로가기](https://pairshot.nomadlabs.kr)** &nbsp;&nbsp; **[<img src="./docs/readme/app-store-badge.png" alt="App Store" height="18" style="vertical-align:middle;" /> 다운로드](https://apps.apple.com/kr/app/pairshot-%ED%8E%98%EC%96%B4%EC%83%B7-before-after/id6770494128)**
-
-<br/>
+**[🌐 공식 웹사이트](https://pairshot.nomadlabs.kr)** &nbsp;&nbsp; **[<img src="./docs/readme/app-store-badge.png" alt="App Store" height="18" style="vertical-align:middle;" /> 다운로드](https://apps.apple.com/kr/app/pairshot-%ED%8E%98%EC%96%B4%EC%83%B7-before-after/id6770494128)**
 
 [![Swift](https://img.shields.io/badge/Swift-6.0-F05138?style=flat-square&logo=swift&logoColor=white)](https://swift.org/)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-iOS_17%2B-007AFF?style=flat-square&logo=swift&logoColor=white)](https://developer.apple.com/xcode/swiftui/)
 [![AVFoundation](https://img.shields.io/badge/AVFoundation-1F2937?style=flat-square&logo=apple&logoColor=white)](https://developer.apple.com/av-foundation/)
 [![License](https://img.shields.io/badge/License-Private-red?style=flat-square)]()
 
-<br/>
+비포·애프터 촬영 및 관리 전용 카메라 애플리케이션.</br>
+비포·애프터 촬영 및 관리 보조, 일괄 합성 등 현장 작업자의 번거로운 워크플로우를 개선합니다.
 
 </div>
 
-<br/>
-
----
-
-## 목차
-
-- [개요](#개요)
-- [기술 스택](#기술-스택)
-- [주요 기능](#주요-기능)
-- [릴리즈 노트](#릴리즈-노트)
-
----
-
-## 개요
-
-PairShot은 Before·After 사진 촬영·관리·합성·워터마크 삽입·내보내기 등 관리 편의기능을 제공하는 iOS 애플리케이션입니다. 각 Before·After 촬영본 페어를 자동으로 묶어 관리하며, 오버레이 가이드를 통한 손쉬운 After 촬영 지원, 합성·워터마크·압축파일 내보내기까지 전·후 사진 촬영에 필요한 전체 워크플로우를 제공합니다.
-
-
-<br/>
-
----
 
 ## 기술 스택
 
@@ -79,57 +56,76 @@ PairShot은 Before·After 사진 촬영·관리·합성·워터마크 삽입·�
 
 ## 주요 기능
 
-### `01` · 촬영
+### 촬영
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-#### 프로젝트 기반 촬영
-생성한 각 프로젝트 별 Before·After 페어를 자동으로 분류합니다. After 사진 촬영 시 기존 Before 사진과의 자동 페어링 기능을 제공합니다.
+#### BEFORE 오버레이 가이드
+BEFORE 사진을 카메라 프리뷰에 오버레이 형식으로 표시하여 촬영 구도를 쉽게 맞출 수 있도록 보조합니다.
+투명도 옵션 토글 및 조절 방식으로 사용자 별 커스텀이 가능합니다.
 
 </td>
 <td width="50%" valign="top">
 
-#### 오버레이 가이드
-After 촬영 시 Before 사진을 반투명 오버레이로 뷰파인더에 표시합니다. 동일한 구도·앵글을 손쉽게 재현할 수 있습니다.
+#### 스트립 캐러셀
+AFTER 촬영 중 매번 각 BEFORE 사진을 기기앨범 또는 홈화면에서 조회할 필요없도록, AFTER 촬영 페어가 없는 BEFORE 사진 리스트를 표시합니다.</br>
+촬영 화면에서 잔여 BEFORE 사진을 슬라이드 제스처로 조회 및 선택할 수 있으며, 각 카드 별 롱프레스 제스처로 미리보기 확대 기능을 제공합니다. 
 
 </td>
 </tr>
+<tr>
+<td width="50%" valign="top">
+
+#### 회전 가이드
+각 BEFORE 사진이 촬영 당시 기기를 가로 또는 세로 중 어느 방향으로 촬영한 사진인지 안내합니다. </br>
+BEFORE 스트립의 카드 별 고정 아이콘으로 표시하며, 카메라 프리뷰에서는 현재 기기 센서 값에 따라 동적으로 기기 회전 방향을 안내합니다.
+
+</td>
+<td width="50%" valign="top">
+
+#### 카메라 옵션
+1:1 · 4:3 · 16:9 촬영 비율 설정 옵션 및 격자 그리드, 수평계, 오버레이 토글, 야간모드, 조도 조절 옵션을 제공합니다.
+
+</td>
+</tr>
+
 </table>
 
-<br/>
 
----
-
-### `02` · 관리 및 내보내기
+### 전·후 사진 관리
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-#### 페어 카드 관리
-프로젝트별 갤러리에서 Before·After 페어 카드를 관리할 수 있습니다. 비교 뷰 미리보기, 프로젝트 이름 변경·삭제 등 기본 관리 기능을 제공합니다.
+#### 페어 카드
+전·후 사진을 개별 사진이 아닌 한 쌍의 페어 카드 UI/UX 형식으로 관리할 수 있습니다. </br>
+각 카드 별 삭제 · AFTER만 삭제 · 합성 결과 미리보기 모달 · 기기저장 · Sharesheet 공유 기능을 제공합니다.
 
 </td>
 <td width="50%" valign="top">
 
-#### 이미지 합성
-선택한 Before·After 페어 원본 비트맵을 합성하여 단일 비교 이미지를 생성합니다. 또한, 합성 이미지에 적용할 테두리 및 레이블 사용자 커스텀 설정을 지원합니다.
+#### 전·후 합성
+페어 카드 전·후 사진의 원본 비트맵을 합성하여 단일 합성 이미지를 생성할 수 있습니다. </br>
+테두리 · 레이블 설정 기능을 제공하며, 각각 색상 · 사이즈 · 두께 · 레이블 위치 등 세부 커스텀 가능한 옵션 설정 기능을 제공합니다.
 
 </td>
 </tr>
 <tr>
 <td valign="top">
 
-#### 워터마크 자동 삽입
-이미지 텍스트·로고 워터마크 삽입 기능을 지원합니다. 텍스트·로고 설정, 위치·크기 커스터마이징을 통해 원하는 워터마크를 자유롭게 삽입할 수 있습니다.
+#### 워터마크 설정
+텍스트 반복 워터마크 · 로고 이미지 워터마크 자동 삽입이 가능합니다. </br>
+텍스트 및 이미지의 사이즈, 투명도 등 세부 커스텀 옵션 설정 기능을 제공합니다.
 
 </td>
 <td valign="top">
 
 #### 내보내기 및 공유
-개별 이미지 갤러리 저장·압축 파일 생성 기능을 제공합니다. Before·After·합성본 원본 또는 워터마크 삽입 버전을 자유롭게 선택하여 기기, 메신저앱, 공유드라이브 등 원하는 곳으로 즉시 전송할 수 있습니다.
+선택된 페어 카드 이미지를 내 기기에 저장 또는 Sharesheet를 통한 전송이 가능합니다. </br>
+설정된 옵션 (내보낼 사진 종류, 파일 형식, 워터마크 삽입 여부, 합성 적용 여부)을 선택한 페어 카드에 일괄 적용하여 내보내기 또는 공유가 가능합니다.
 
 </td>
 </tr>
