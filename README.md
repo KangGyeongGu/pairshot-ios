@@ -2,7 +2,7 @@
 
 <img src="docs/readme/project-banner.png" alt="PairShot" width="100%" />
 
-<h1>PairShot iOS</h1>
+<h2>PairShot iOS</h2>
 <h3>Before·After 촬영 및 관리 애플리케이션</h3>
 
 **[🌐 공식 웹사이트](https://pairshot.nomadlabs.kr)** &nbsp;&nbsp; **[<img src="./docs/readme/app-store-badge.png" alt="App Store" height="18" style="vertical-align:middle;" /> 다운로드](https://apps.apple.com/kr/app/pairshot-%ED%8E%98%EC%96%B4%EC%83%B7-before-after/id6770494128)**
