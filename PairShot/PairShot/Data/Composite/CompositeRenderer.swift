@@ -189,7 +189,6 @@ nonisolated enum CompositeRenderer {
         let paneSizes = CompositeFrameMath.paneScaledSizes(
             beforeSize: before.size,
             afterSize: after.size,
-            layout: layout,
         )
         let edges = EdgeBorders.compute(
             paneSizes: paneSizes,
@@ -212,8 +211,8 @@ nonisolated enum CompositeRenderer {
                 canvas: frames.canvas,
                 combineSettings: combineSettings,
             )
-            before.draw(in: frames.beforeRect)
-            after.draw(in: frames.afterRect)
+            drawAspectFillCentered(before, in: frames.beforeRect)
+            drawAspectFillCentered(after, in: frames.afterRect)
             if let watermark {
                 WatermarkOverlay.draw(in: frames.beforeRect, settings: watermark, logoData: watermarkLogoData)
                 WatermarkOverlay.draw(in: frames.afterRect, settings: watermark, logoData: watermarkLogoData)
@@ -255,6 +254,28 @@ nonisolated enum CompositeRenderer {
             case .vertical:
                 CompositeFrameMath.vertical(paneSizes: paneSizes, borders: borders)
         }
+    }
+
+    nonisolated static func drawAspectFillCentered(_ image: UIImage, in rect: CGRect) {
+        guard rect.width > 0, rect.height > 0 else { return }
+        let imageWidth = max(image.size.width, 1)
+        let imageHeight = max(image.size.height, 1)
+        let scale = max(rect.width / imageWidth, rect.height / imageHeight)
+        let drawSize = CGSize(width: imageWidth * scale, height: imageHeight * scale)
+        let drawRect = CGRect(
+            x: rect.midX - drawSize.width / 2,
+            y: rect.midY - drawSize.height / 2,
+            width: drawSize.width,
+            height: drawSize.height,
+        )
+        guard let context = UIGraphicsGetCurrentContext() else {
+            image.draw(in: rect)
+            return
+        }
+        context.saveGState()
+        context.clip(to: rect)
+        image.draw(in: drawRect)
+        context.restoreGState()
     }
 }
 

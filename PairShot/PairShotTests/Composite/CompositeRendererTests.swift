@@ -211,6 +211,33 @@ struct CompositeRendererTests {
         #expect(ImageSignatures.isJPEG(data))
         #expect(!ImageSignatures.isHEIC(data))
     }
+
+    @Test
+    func `composeImage: 종횡비 다른 가로+세로 페어도 정상 출력 (crop-fill 경로)`() throws {
+        let before = makeSolidJPEG(width: 1200, height: 800, color: .red)
+        let after = makeSolidJPEG(width: 800, height: 1200, color: .blue)
+        for layout in [CompositeLayout.horizontal, .vertical] {
+            let options = CompositeOptions(
+                layout: layout,
+                compressionQuality: 0.95,
+                utType: .jpeg,
+                watermarkEnabled: false,
+                watermark: nil,
+                combineSettings: nil,
+                includeGPS: false,
+            )
+            let data = try CompositeRenderer.composeImage(
+                beforeData: before,
+                afterData: after,
+                options: options,
+                capturedAt: .now,
+                latitude: nil,
+                longitude: nil,
+            )
+            #expect(!data.isEmpty)
+            #expect(decodePixelSize(jpeg: data) != nil)
+        }
+    }
 }
 
 private struct PixelGrid {
