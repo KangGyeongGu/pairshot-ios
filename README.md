@@ -2,9 +2,8 @@
 
 <img src="docs/readme/project-banner.png" alt="PairShot" width="100%" />
 
-# PairShot iOS
-
-**Before·After 촬영 및 관리 애플리케이션**
+<h1>PairShot iOS</h1>
+<h3>Before·After 촬영 및 관리 애플리케이션</h3>
 
 **[🌐 공식 웹사이트](https://pairshot.nomadlabs.kr)** &nbsp;&nbsp; **[<img src="./docs/readme/app-store-badge.png" alt="App Store" height="18" style="vertical-align:middle;" /> 다운로드](https://apps.apple.com/kr/app/pairshot-%ED%8E%98%EC%96%B4%EC%83%B7-before-after/id6770494128)**
 
@@ -18,6 +17,7 @@
 
 </div>
 
+<br/>
 
 ## 기술 스택
 
@@ -52,8 +52,6 @@
 ![Periphery](https://img.shields.io/badge/Periphery-F05138?style=for-the-badge&logo=swift&logoColor=white)
 
 <br/>
-
----
 
 ## 주요 기능
 
@@ -138,17 +136,17 @@ BEFORE 스트립의 카드 별 고정 아이콘으로 표시하며, 카메라 �
 
 ## 릴리즈 노트
 
-| 버전 | 날짜 | Build | 주요 내용 | 노트 |
-|------|------|-------|-----------|------|
-| [v1.3.1](docs/releases/v1.3.1.md) | 2026-06-29 | 1 | 종횡비 다른 전후 사진 합성 50:50 분할 정상화 · AFTER 스트립 카드에 가로/세로 촬영 방향 아이콘 추가 | [→](docs/releases/v1.3.1.md) |
-| [v1.3.0](docs/releases/v1.3.0.md) | 2026-06-17 | 1 | 결제 실패(재시도·유예) 구독 Pro 만료 정상화 · 첫 실행 Paywall 네이티브 닫기 버튼 추가 · adFree 전용 프로모션 차원 제거 | [→](docs/releases/v1.3.0.md) |
-| [v1.2.3](docs/releases/v1.2.3.md) | 2026-06-08 | 1 | 정책·마케팅·쿠폰 API 호스트를 `pairshot.nomadlabs.kr` 로 이전 · 정책 URL 베이스를 xcconfig 주입으로 단일 출처화 | [→](docs/releases/v1.2.3.md) |
-| [v1.2.2](docs/releases/v1.2.2.md) | 2026-06-01 | 1 | 결제 후 paywall 자동 닫힘·광고 즉시 제거 · Paywall 텍스트 크기 앱 정책 강제 · 설정 텍스트 크기·테마 즉시 반영 | [→](docs/releases/v1.2.2.md) |
-| [v1.2.1](docs/releases/v1.2.1.md) | 2026-05-30 | 1 | 첫 실행 Paywall 무료 진입로 가독성 강조·약관 안내 순서 정리 · 카메라 진입 SF Symbol 콘솔 경고 4건 제거 | [→](docs/releases/v1.2.1.md) |
-| [v1.2.0](docs/releases/v1.2.0.md) | 2026-05-30 | 1 | 내보내기 프리셋 4 슬롯 (무료 2 / Pro 4) · 페어 미리보기 액션 바·핀치 줌 패닝·After 삭제 개편 · 인앱 리뷰 prompt | [→](docs/releases/v1.2.0.md) |
-| [v1.1.1](docs/releases/v1.1.1.md) | 2026-05-24 | 1 | 튜토리얼 안정화 (stuck 검출·peek-close·cold-start 복원) · Dynamic Type 앱 정책 · 카메라 재진입 프리뷰 멈춤 fix | [→](docs/releases/v1.1.1.md) |
-| [v1.1.0](docs/releases/v1.1.0.md) | 2026-05-23 | 1 | 합성 설정 레이블 배치 방식(이미지/테두리) 신설 · AFTER long-press 미리보기 · ATT/UMP 정공화 | [→](docs/releases/v1.1.0.md) |
-| [v1.0.0](docs/releases/v1.0.0.md) | 2026-05-19 | 1 | Before·After 페어 사진 촬영·관리·내보내기 첫 출시 | [→](docs/releases/v1.0.0.md) |
+| 버전 | 날짜 | Build | 주요 내용                                                                            | 노트 |
+|------|------|-------|----------------------------------------------------------------------------------|------|
+| [v1.3.1](docs/releases/v1.3.1.md) | 2026-06-29 | 1 | 종횡비 다른 전후 사진 합성 비율 개선 · AFTER 스트립 카드 촬영 방향 아이콘 추가                                | [→](docs/releases/v1.3.1.md) |
+| [v1.3.0](docs/releases/v1.3.0.md) | 2026-06-17 | 1 | 결제 실패(재시도·유예) 시 구독 Pro 만료 처리 · 첫 실행 Paywall 네이티브 닫기 버튼 추가 · adFree 전용 프로모션 차원 제거 | [→](docs/releases/v1.3.0.md) |
+| [v1.2.3](docs/releases/v1.2.3.md) | 2026-06-08 | 1 | 정책·마케팅·쿠폰 API 호스트 이전 · 정책 URL 베이스 주입 단일 소스화                                      | [→](docs/releases/v1.2.3.md) |
+| [v1.2.2](docs/releases/v1.2.2.md) | 2026-06-01 | 1 | paywall 구독 결제 시 버그 수정 · Paywall 텍스트 크기 앱 정책 강제 · 설정 반영 타이밍 수정                    | [→](docs/releases/v1.2.2.md) |
+| [v1.2.1](docs/releases/v1.2.1.md) | 2026-05-30 | 1 | 첫 실행 Paywall 무료 진입로 가독성 강조·약관 안내 순서 정리                                           | [→](docs/releases/v1.2.1.md) |
+| [v1.2.0](docs/releases/v1.2.0.md) | 2026-05-30 | 1 | 무료버전 내보내기 프리셋 개수 제한 추가 · 페어 미리보기 메뉴 개편 · 인앱 리뷰 prompt                            | [→](docs/releases/v1.2.0.md) |
+| [v1.1.1](docs/releases/v1.1.1.md) | 2026-05-24 | 1 | 튜토리얼 로직 개선 · Dynamic Type 앱 정책 · 카메라 재진입 시 버그 수정                                 | [→](docs/releases/v1.1.1.md) |
+| [v1.1.0](docs/releases/v1.1.0.md) | 2026-05-23 | 1 | 합성 설정 레이블 배치 (이미지 내부/테두리 내부) 선택 기능 추가 · AFTER long-press 미리보기 기능 추가 · ATT/UMP 교정 | [→](docs/releases/v1.1.0.md) |
+| [v1.0.0](docs/releases/v1.0.0.md) | 2026-05-19 | 1 | 페어샷 iOS 버전 앱스토어 최초 출시                                                            | [→](docs/releases/v1.0.0.md) |
 
 <br/>
 
