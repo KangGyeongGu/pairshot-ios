@@ -8,7 +8,7 @@ enum SaveToDeviceOutcome {
 final class ImmediateExportService {
     let photoLibrary: PhotoLibraryService
     let exportPairs: ExportPairsUseCase
-    let photoLibraryExporter: PhotoLibraryExport
+    let photoLibraryExporter: any PhotoLibraryExporting
     let snackbarQueue: SnackbarQueue
     let preferences: ExportPreferences
     let tempDirectoryProvider: @Sendable () -> URL
@@ -24,7 +24,7 @@ final class ImmediateExportService {
     init(
         photoLibrary: PhotoLibraryService,
         exportPairs: ExportPairsUseCase,
-        photoLibraryExporter: PhotoLibraryExport,
+        photoLibraryExporter: any PhotoLibraryExporting,
         snackbarQueue: SnackbarQueue,
         appSettings: AppSettings,
         pairRepo: PhotoPairRepository,

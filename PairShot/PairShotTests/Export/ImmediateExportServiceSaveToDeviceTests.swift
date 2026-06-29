@@ -1,6 +1,8 @@
 import Foundation
 @testable import PairShot
+import Photos
 import Testing
+import UniformTypeIdentifiers
 
 @MainActor
 struct ImmediateExportServiceSaveToDeviceTests {
@@ -98,7 +100,7 @@ struct ImmediateExportServiceSaveToDeviceTests {
                     appSettings: appSettings,
                 ),
             ),
-            photoLibraryExporter: PhotoLibraryExport(),
+            photoLibraryExporter: StubPhotoLibraryExporter(),
             snackbarQueue: snackbarQueue,
             appSettings: appSettings,
             pairRepo: pairRepo,
@@ -136,6 +138,16 @@ struct ImmediateExportServiceSaveToDeviceTests {
             _ = await group.next()
             group.cancelAll()
         }
+    }
+}
+
+private final class StubPhotoLibraryExporter: PhotoLibraryExporting, @unchecked Sendable {
+    func authorize() async -> PHAuthorizationStatus {
+        .authorized
+    }
+
+    func saveImageData(_: Data, type _: ImageMediaType, utType _: UTType) async throws -> String {
+        "mock-\(UUID().uuidString)"
     }
 }
 
