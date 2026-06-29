@@ -4,7 +4,7 @@ import Foundation
 struct ExportSaveDependencies {
     let snackbarQueue: SnackbarQueue
     let photoLibrary: PhotoLibraryService
-    let photoLibraryExporter: PhotoLibraryExport
+    let photoLibraryExporter: any PhotoLibraryExporting
     let pairRepo: PhotoPairRepository
     let appSettings: AppSettings
 }

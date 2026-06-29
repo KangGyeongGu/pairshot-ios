@@ -11,7 +11,13 @@ enum PhotoLibraryExportError: Error, Equatable {
     case writeFailed(String)
 }
 
-final class PhotoLibraryExport: Sendable {
+nonisolated protocol PhotoLibraryExporting: Sendable {
+    func authorize() async -> PHAuthorizationStatus
+    @discardableResult
+    func saveImageData(_ data: Data, type: ImageMediaType, utType: UTType) async throws -> String
+}
+
+final class PhotoLibraryExport: PhotoLibraryExporting, Sendable {
     init() {}
 
     nonisolated func authorize() async -> PHAuthorizationStatus {

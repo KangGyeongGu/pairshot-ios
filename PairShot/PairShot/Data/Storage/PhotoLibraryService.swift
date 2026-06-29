@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 import Photos
 import UIKit
 import UniformTypeIdentifiers
@@ -198,6 +199,7 @@ final class PhotoLibraryThumbnailCache {
     private let cache: NSCache<NSString, UIImage>
     private let manager = PHCachingImageManager()
     private let failedKeys: NSCache<NSString, NSNumber>
+    private let orientationCache: NSCache<NSString, NSNumber>
     private let tutorialPhotoStore: TutorialPhotoStore?
 
     init(
@@ -212,6 +214,9 @@ final class PhotoLibraryThumbnailCache {
         let failed = NSCache<NSString, NSNumber>()
         failed.countLimit = 256
         failedKeys = failed
+        let orientations = NSCache<NSString, NSNumber>()
+        orientations.countLimit = 512
+        orientationCache = orientations
         self.tutorialPhotoStore = tutorialPhotoStore
     }
 
@@ -289,10 +294,63 @@ final class PhotoLibraryThumbnailCache {
         return image
     }
 
+    func orientation(for localIdentifier: String) async -> CGImagePropertyOrientation? {
+        guard !localIdentifier.isEmpty else { return nil }
+        let key = orientationKey(localIdentifier)
+        if let cached = orientationCache.object(forKey: key) {
+            return CGImagePropertyOrientation(rawValue: cached.uint32Value)
+        }
+        if TutorialPhotoStore.isTutorialIdentifier(localIdentifier) {
+            return await tutorialOrientation(for: localIdentifier, key: key)
+        }
+        let assets = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier], options: nil)
+        guard let asset = assets.firstObject else { return nil }
+        let data: Data? = await withCheckedContinuation { continuation in
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .highQualityFormat
+            options.isNetworkAccessAllowed = true
+            options.isSynchronous = false
+            var didResume = false
+            manager.requestImageDataAndOrientation(for: asset, options: options) { data, _, _, _ in
+                guard !didResume else { return }
+                didResume = true
+                continuation.resume(returning: data)
+            }
+        }
+        guard let data, let resolved = orientation(fromImageData: data) else { return nil }
+        orientationCache.setObject(NSNumber(value: resolved.rawValue), forKey: key)
+        return resolved
+    }
+
+    private func tutorialOrientation(
+        for localIdentifier: String,
+        key: NSString,
+    ) async -> CGImagePropertyOrientation? {
+        guard let tutorialPhotoStore,
+              let data = await tutorialPhotoStore.loadData(localIdentifier: localIdentifier),
+              let resolved = orientation(fromImageData: data)
+        else { return nil }
+        orientationCache.setObject(NSNumber(value: resolved.rawValue), forKey: key)
+        return resolved
+    }
+
+    private func orientationKey(_ localIdentifier: String) -> NSString {
+        "orient:\(localIdentifier)" as NSString
+    }
+
+    private func orientation(fromImageData data: Data) -> CGImagePropertyOrientation? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let raw = properties[kCGImagePropertyOrientation] as? UInt32
+        else { return nil }
+        return CGImagePropertyOrientation(rawValue: raw)
+    }
+
     func evict(localIdentifier: String) {
         guard !localIdentifier.isEmpty else { return }
         cache.removeAllObjects()
         failedKeys.removeAllObjects()
+        orientationCache.removeAllObjects()
     }
 
     private func tutorialImage(for localIdentifier: String, key: NSString) async -> UIImage? {
@@ -319,5 +377,11 @@ final class PhotoLibraryThumbnailCache {
         let width = Int(image.size.width * scale)
         let height = Int(image.size.height * scale)
         return max(0, width * height * 4)
+    }
+}
+
+nonisolated extension CGImagePropertyOrientation {
+    var indicatesLandscapeHold: Bool {
+        rawValue <= 4
     }
 }

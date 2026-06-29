@@ -90,27 +90,11 @@ nonisolated enum CompositeFrameMath {
     static func paneScaledSizes(
         beforeSize: CGSize,
         afterSize: CGSize,
-        layout: CompositeLayout,
     ) -> PaneScaledSizes {
-        let beforeWidth = max(beforeSize.width, 1)
-        let beforeHeight = max(beforeSize.height, 1)
-        let afterWidth = max(afterSize.width, 1)
-        let afterHeight = max(afterSize.height, 1)
-        switch layout {
-            case .horizontal:
-                let common = min(beforeHeight, afterHeight)
-                return PaneScaledSizes(
-                    before: CGSize(width: beforeWidth * (common / beforeHeight), height: common),
-                    after: CGSize(width: afterWidth * (common / afterHeight), height: common),
-                )
-
-            case .vertical:
-                let common = min(beforeWidth, afterWidth)
-                return PaneScaledSizes(
-                    before: CGSize(width: common, height: beforeHeight * (common / beforeWidth)),
-                    after: CGSize(width: common, height: afterHeight * (common / afterWidth)),
-                )
-        }
+        let slotWidth = max(min(beforeSize.width, afterSize.width), 1)
+        let slotHeight = max(min(beforeSize.height, afterSize.height), 1)
+        let slot = CGSize(width: slotWidth, height: slotHeight)
+        return PaneScaledSizes(before: slot, after: slot)
     }
 
     static func horizontal(
