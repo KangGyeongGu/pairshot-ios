@@ -2,6 +2,12 @@ import SwiftUI
 import UIKit
 
 struct StripCard: View {
+    private enum HoldOrientation {
+        case unknown
+        case landscape
+        case portrait
+    }
+
     @Environment(AppEnvironment.self) private var env
     @Environment(\.displayScale) private var displayScale
 
@@ -10,6 +16,7 @@ struct StripCard: View {
     let stripZoneHeight: CGFloat
 
     @State private var thumbnail: UIImage?
+    @State private var hold: HoldOrientation = .unknown
 
     private var cardWidth: CGFloat {
         StripDesign.cardWidth(stripHeight: stripZoneHeight)
@@ -40,6 +47,11 @@ struct StripCard: View {
         }
         .frame(width: cardWidth, height: cardHeight)
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .overlay(alignment: .topTrailing) {
+            if hold != .unknown {
+                orientationBadge(isLandscape: hold == .landscape)
+            }
+        }
         .overlay(
             RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(
@@ -61,5 +73,20 @@ struct StripCard: View {
             for: identifier,
             pixelSize: cardWidth * scale,
         )
+        if let orientation = await env.thumbnailCache.orientation(for: identifier) {
+            hold = orientation.indicatesLandscapeHold ? .landscape : .portrait
+        }
+    }
+
+    @ViewBuilder
+    private func orientationBadge(isLandscape: Bool) -> some View {
+        let badgeSize = cardWidth * 0.3
+        Image(systemName: "iphone")
+            .font(.system(size: badgeSize * 0.56, weight: .semibold))
+            .foregroundStyle(.white)
+            .rotationEffect(isLandscape ? .degrees(90) : .zero)
+            .frame(width: badgeSize, height: badgeSize)
+            .background(.black.opacity(0.5), in: RoundedRectangle(cornerRadius: badgeSize * 0.28))
+            .padding(cardWidth * 0.06)
     }
 }
