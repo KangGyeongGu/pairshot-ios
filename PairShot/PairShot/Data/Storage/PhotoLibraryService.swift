@@ -153,9 +153,9 @@ final nonisolated class PhotoLibraryService: Sendable {
         guard let asset = fetchAsset(localIdentifier: localIdentifier) else { return nil }
         return await withCheckedContinuation { (continuation: CheckedContinuation<UIImage?, Never>) in
             let options = PHImageRequestOptions()
-            options.deliveryMode = .opportunistic
+            options.deliveryMode = .highQualityFormat
             options.isNetworkAccessAllowed = true
-            options.resizeMode = .fast
+            options.resizeMode = .exact
             options.isSynchronous = false
             let resumeBox = PhotoLibraryPreviewResumeBox()
             PHImageManager.default().requestImage(
@@ -167,7 +167,8 @@ final nonisolated class PhotoLibraryService: Sendable {
                 guard !resumeBox.didResume else { return }
                 let isError = info?[PHImageErrorKey] != nil
                 let isCancelled = (info?[PHImageCancelledKey] as? Bool) ?? false
-                if result == nil, !isError, !isCancelled {
+                let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
+                if result == nil || isDegraded, !isError, !isCancelled {
                     return
                 }
                 resumeBox.didResume = true
