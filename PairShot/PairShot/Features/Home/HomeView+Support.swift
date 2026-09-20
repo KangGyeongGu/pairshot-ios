@@ -61,22 +61,20 @@ struct HomeDefaultToolbar: ToolbarContent {
     let onTutorialAdvanceAfterSettings: () -> Void
 
     var body: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            VStack(spacing: 1) {
-                Text(String(localized: "PairShot"))
-                    .font(isPro ? .subheadline.weight(.semibold) : .title3.weight(.semibold))
-                    .foregroundStyle(.primary)
-                if isPro {
-                    Text(verbatim: "Pro")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.tint)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 1.5)
-                        .background(
-                            Capsule().stroke(Color.accentColor, lineWidth: 1.2),
-                        )
-                }
+        if #available(iOS 26.0, *) {
+            ToolbarItem(placement: .topBarLeading) { logo }
+                .sharedBackgroundVisibility(.hidden)
+        } else {
+            ToolbarItem(placement: .topBarLeading) { logo }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                Task { await viewModel?.openAddPair() }
+            } label: {
+                Image(systemName: "plus")
             }
+            .accessibilityLabel(String(localized: "home_button_add_pair"))
+            .disabled(viewModel == nil)
         }
         ToolbarItem(placement: .topBarTrailing) {
             Button {
@@ -104,6 +102,25 @@ struct HomeDefaultToolbar: ToolbarContent {
             .disabled(onPushSettings == nil)
             .tutorialAnchor(TutorialAnchorID.homeSettings)
         }
+    }
+
+    private var logo: some View {
+        VStack(spacing: 1) {
+            Text(String(localized: "PairShot"))
+                .font(isPro ? .subheadline.weight(.semibold) : .title3.weight(.semibold))
+                .foregroundStyle(.primary)
+            if isPro {
+                Text(verbatim: "Pro")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.tint)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 1.5)
+                    .background(
+                        Capsule().stroke(Color.accentColor, lineWidth: 1.2),
+                    )
+            }
+        }
+        .fixedSize()
     }
 }
 
@@ -185,6 +202,15 @@ struct HomeSheets: ViewModifier {
                 ShareSheet(activityItems: items.values) {
                     viewModel.clearShareItems()
                 }
+            }
+            .sheet(isPresented: $viewModel.showAddPair) {
+                AddPairSheet(
+                    drafts: $viewModel.addPairDrafts,
+                    selectionLimit: viewModel.addPairSelectionLimit,
+                    errorText: viewModel.addPairErrorText,
+                    thumbnailCache: viewModel.thumbnailCache,
+                    onConfirm: { Task { await viewModel.confirmAddPair() } },
+                )
             }
             .background(
                 Color.clear

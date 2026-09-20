@@ -3644,6 +3644,159 @@
         }
       }
     },
+    "addpair_label_after" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "애프터"
+          }
+        }
+      }
+    },
+    "addpair_desc_save_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to save some pairs. Please try again."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 페어 저장에 실패했습니다. 다시 시도해 주세요."
+          }
+        }
+      }
+    },
+    "addpair_desc_swipe" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe sideways to add more pairs"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옆으로 넘겨 여러 쌍을 추가할 수 있어요"
+          }
+        }
+      }
+    },
+    "addpair_desc_assist" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "After-capture assistance may be limited for photos added from the gallery."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "갤러리에서 추가한 사진은 애프터 촬영 보조 기능이 제한될 수 있습니다"
+          }
+        }
+      }
+    },
+    "addpair_label_before" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Before"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비포"
+          }
+        }
+      }
+    },
+    "addpair_button_confirm_int" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add %d pairs"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페어 %d개 추가"
+          }
+        }
+      }
+    },
+    "addpair_desc_inaccessible" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't access the selected photo. Allow access to it in Settings > Photos."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 사진에 접근할 수 없습니다. 설정 > 사진에서 해당 사진의 접근을 허용해 주세요."
+          }
+        }
+      }
+    },
+    "addpair_dialog_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add from gallery"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "갤러리에서 추가"
+          }
+        }
+      }
+    },
+    "home_button_add_pair" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add pair"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페어 추가"
+          }
+        }
+      }
+    },
     "home_button_deselect_all" : {
       "extractionState" : "manual",
       "localizations" : {

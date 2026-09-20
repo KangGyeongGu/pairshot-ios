@@ -26,6 +26,15 @@ struct AlbumDetailView: View {
         )
     }
 
+    private var addPairSheetBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel?.showAddPair ?? false },
+            set: { newValue in
+                if !newValue { viewModel?.showAddPair = false }
+            },
+        )
+    }
+
     private var missingAlbumView: some View {
         VStack(spacing: 12) {
             Image(systemName: "exclamationmark.triangle")
@@ -75,6 +84,18 @@ struct AlbumDetailView: View {
                 PairPickerView(albumId: albumId)
             }
         }
+        .sheet(isPresented: addPairSheetBinding) {
+            if let viewModel {
+                @Bindable var bindable = viewModel
+                AddPairSheet(
+                    drafts: $bindable.addPairDrafts,
+                    selectionLimit: viewModel.addPairSelectionLimit,
+                    errorText: viewModel.addPairErrorText,
+                    thumbnailCache: viewModel.thumbnailCache,
+                    onConfirm: { Task { await viewModel.confirmAddPair() } },
+                )
+            }
+        }
     }
 
     @ToolbarContentBuilder
@@ -91,6 +112,7 @@ struct AlbumDetailView: View {
             } else {
                 AlbumDetailDefaultToolbar(
                     onSelect: viewModel.enterSelectionMode,
+                    onAddFromGallery: { Task { await viewModel.openAddPair() } },
                     onRename: { viewModel.beginRename(currentName: album.name) },
                     onDelete: { viewModel.requestAlbumDeletion(album: album) },
                 )
