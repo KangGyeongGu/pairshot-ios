@@ -79,11 +79,12 @@ struct AddPairSheet: View {
     private var draftPager: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 20) {
-                ForEach($drafts) { $draft in
+                ForEach(Array($drafts.enumerated()), id: \.element.id) { index, $draft in
+                    let unlocked = index == 0 || drafts[index - 1].beforeItem != nil
                     AddPairDraftCard(draft: $draft, thumbnailCache: thumbnailCache)
-                        .containerRelativeFrame(.horizontal) { length, _ in
-                            length - 72
-                        }
+                        .disabled(!unlocked)
+                        .opacity(unlocked ? 1 : 0.4)
+                        .containerRelativeFrame(.horizontal)
                 }
             }
             .scrollTargetLayout()
@@ -116,67 +117,76 @@ private struct AddPairDraftCard: View {
     let thumbnailCache: PhotoLibraryThumbnailCache
 
     var body: some View {
-        HStack(spacing: 12) {
-            AddPairSlot(
-                title: String(localized: "addpair_label_before"),
-                item: $draft.beforeItem,
-                thumbnailCache: thumbnailCache,
-            )
-            AddPairSlot(
-                title: String(localized: "addpair_label_after"),
-                item: $draft.afterItem,
-                thumbnailCache: thumbnailCache,
-            )
-            .disabled(draft.beforeItem == nil)
-            .opacity(draft.beforeItem == nil ? 0.4 : 1)
+        VStack(spacing: 8) {
+            HStack(spacing: 0) {
+                Text(String(localized: "addpair_label_before"))
+                    .frame(maxWidth: .infinity)
+                Text(String(localized: "addpair_label_after"))
+                    .frame(maxWidth: .infinity)
+                    .opacity(draft.beforeItem == nil ? 0.4 : 1)
+            }
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+
+            Color.clear
+                .aspectRatio(1.8, contentMode: .fit)
+                .overlay {
+                    HStack(spacing: 0) {
+                        AddPairSlot(item: $draft.beforeItem, thumbnailCache: thumbnailCache)
+
+                        Rectangle()
+                            .fill(Color(uiColor: .separator).opacity(0.5))
+                            .frame(width: 1)
+
+                        AddPairSlot(item: $draft.afterItem, thumbnailCache: thumbnailCache)
+                            .disabled(draft.beforeItem == nil)
+                            .opacity(draft.beforeItem == nil ? 0.4 : 1)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(Color(.separator), lineWidth: 0.5),
+                )
         }
     }
 }
 
 private struct AddPairSlot: View {
-    let title: String
     @Binding var item: PhotosPickerItem?
     let thumbnailCache: PhotoLibraryThumbnailCache
 
     @State private var thumbnail: UIImage?
+    @State private var isLoading = false
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
-            PhotosPicker(
-                selection: $item,
-                matching: .images,
-                photoLibrary: .shared(),
-            ) {
-                slotContent
-            }
+        let thumbnail = thumbnail
+        let isLoading = isLoading
+        PhotosPicker(
+            selection: $item,
+            matching: .images,
+            photoLibrary: .shared(),
+        ) {
+            Rectangle()
+                .fill(Color(.secondarySystemGroupedBackground))
+                .overlay {
+                    if let thumbnail {
+                        Image(uiImage: thumbnail)
+                            .resizable()
+                            .scaledToFill()
+                    } else if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(.secondary)
+                    } else {
+                        Image(systemName: "photo.badge.plus")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .clipped()
         }
         .task(id: item) { await loadThumbnail() }
-    }
-
-    private var slotContent: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.secondarySystemGroupedBackground))
-            if let thumbnail {
-                Image(uiImage: thumbnail)
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                Image(systemName: "photo.badge.plus")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .aspectRatio(3.0 / 4.0, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(Color(.separator), lineWidth: 0.5),
-        )
     }
 
     private func loadThumbnail() async {
@@ -184,6 +194,8 @@ private struct AddPairSlot: View {
             thumbnail = nil
             return
         }
+        isLoading = true
         thumbnail = await thumbnailCache.image(for: identifier)
+        isLoading = false
     }
 }
