@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AlbumDetailDefaultToolbar: ToolbarContent {
     let onSelect: () -> Void
+    let onAddFromGallery: () -> Void
     let onRename: () -> Void
     let onDelete: () -> Void
 
@@ -14,6 +15,15 @@ struct AlbumDetailDefaultToolbar: ToolbarContent {
                     Label(
                         String(localized: "home_desc_selection_mode"),
                         systemImage: "checkmark.circle",
+                    )
+                }
+
+                Button {
+                    onAddFromGallery()
+                } label: {
+                    Label(
+                        String(localized: "addpair_dialog_title"),
+                        systemImage: "photo.badge.plus",
                     )
                 }
 

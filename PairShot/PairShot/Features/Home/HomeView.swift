@@ -97,17 +97,18 @@ struct HomeView: View {
         VStack(spacing: 0) {
             BannerAdSlot()
 
-            HomeFilterRow(
-                contentMode: $bindable.contentMode,
-                sortOrder: $bindable.sortOrder,
-                onModeChange: viewModel.switchContentMode(to:),
-                onSortOrderChange: viewModel.setSortOrder(_:),
-            )
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
-            .disabled(viewModel.isSelectionMode)
-
             grids(viewModel: viewModel, sortedPairs: sortedPairs, sortedAlbums: sortedAlbums)
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    HomeFilterRow(
+                        contentMode: $bindable.contentMode,
+                        sortOrder: $bindable.sortOrder,
+                        onModeChange: viewModel.switchContentMode(to:),
+                        onSortOrderChange: viewModel.setSortOrder(_:),
+                    )
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 8)
+                    .disabled(viewModel.isSelectionMode)
+                }
         }
         .overlay(alignment: .bottom) {
             HomeBottomBarHost(

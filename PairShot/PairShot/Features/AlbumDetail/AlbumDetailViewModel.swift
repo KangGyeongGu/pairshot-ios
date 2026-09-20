@@ -47,6 +47,10 @@ final class AlbumDetailViewModel {
     var beforeCameraTargetPairId: UUID?
     var navigateToPairPicker: Bool = false
     var showPaywall: Bool = false
+    var showAddPair: Bool = false
+    var addPairDrafts: [AddPairDraft] = []
+    var addPairErrorText: String?
+    var addPairSelectionLimit: Int?
 
     let pairRepo: PhotoPairRepository
     let albumRepo: AlbumRepository
@@ -54,6 +58,7 @@ final class AlbumDetailViewModel {
     let deleteAfterPhoto: DeleteAfterPhotoUseCase
     let deleteCombinedExports: DeleteCombinedExportsUseCase
     let deletePairsKeepingCombined: DeletePairsKeepingCombinedUseCase
+    let photoLibrary: PhotoLibraryService
     let thumbnailCache: PhotoLibraryThumbnailCache
     let immediateExport: ImmediateExportService
     let appSettings: AppSettings
@@ -68,6 +73,7 @@ final class AlbumDetailViewModel {
         albumRepo: AlbumRepository,
         deletePairs: DeletePairsUseCase,
         deleteAfterPhoto: DeleteAfterPhotoUseCase,
+        photoLibrary: PhotoLibraryService,
         immediateExport: ImmediateExportService,
         appSettings: AppSettings,
         thumbnailCache: PhotoLibraryThumbnailCache,
@@ -85,6 +91,7 @@ final class AlbumDetailViewModel {
         self.deleteAfterPhoto = deleteAfterPhoto
         self.deleteCombinedExports = deleteCombinedExports
         self.deletePairsKeepingCombined = deletePairsKeepingCombined
+        self.photoLibrary = photoLibrary
         self.immediateExport = immediateExport
         self.appSettings = appSettings
         self.thumbnailCache = thumbnailCache

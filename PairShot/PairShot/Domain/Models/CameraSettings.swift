@@ -64,7 +64,7 @@ nonisolated enum AspectRatio: String, Codable, CaseIterable, Equatable {
 }
 
 nonisolated struct CameraSettings: Codable, Equatable {
-    var zoomFactor: Double
+    var zoomFactor: Double?
     var lensPosition: LensPosition
     var aspectRatio: AspectRatio?
 
@@ -73,7 +73,7 @@ nonisolated struct CameraSettings: Codable, Equatable {
     }
 
     init(
-        zoomFactor: Double = 1.0,
+        zoomFactor: Double? = nil,
         lensPosition: LensPosition = .backWide,
         aspectRatio: AspectRatio? = nil,
     ) {

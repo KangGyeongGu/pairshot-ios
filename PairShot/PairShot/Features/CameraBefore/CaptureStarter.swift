@@ -12,19 +12,32 @@ protocol CaptureStarter: AnyObject {
 
 extension CaptureStarter {
     func startCapture() async {
-        if !membership.proIsActive {
-            let count = await todayCreatedCountOrZero()
-            guard count < PairLimitGate.freeTierDailyLimit else {
-                snackbarQueue.enqueue(
-                    .dailyLimitGate,
-                    debounceKey: "pro_gate_daily_limit",
-                )
-                showPaywall = true
-                return
-            }
-        }
+        guard await passesDailyPairGate() else { return }
         beforeCameraTargetPairId = nil
         showBeforeCamera = true
+    }
+
+    func passesDailyPairGate() async -> Bool {
+        guard let remaining = await dailyPairQuotaRemaining() else { return true }
+        guard remaining > 0 else {
+            presentDailyLimitGate()
+            return false
+        }
+        return true
+    }
+
+    func presentDailyLimitGate() {
+        snackbarQueue.enqueue(
+            .dailyLimitGate,
+            debounceKey: "pro_gate_daily_limit",
+        )
+        showPaywall = true
+    }
+
+    func dailyPairQuotaRemaining() async -> Int? {
+        if membership.proIsActive { return nil }
+        let count = await todayCreatedCountOrZero()
+        return max(0, PairLimitGate.freeTierDailyLimit - count)
     }
 
     func todayCreatedCountOrZero() async -> Int {

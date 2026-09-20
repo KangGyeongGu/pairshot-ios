@@ -49,7 +49,7 @@ final class CreatePairUseCase {
         let pair = PhotoPair(
             id: pairId,
             beforePhotoLocalIdentifier: localIdentifier,
-            beforeZoomFactor: settings.zoomFactor,
+            beforeZoomFactor: settings.zoomFactor ?? 1.0,
             beforeLensIdentifier: settings.lensPosition.rawValue,
             createdAt: timestamp,
             latitude: resolvedLocation?.latitude,
@@ -83,7 +83,7 @@ final class CreatePairUseCase {
         var settings = cameraSettings
         settings.aspectRatio = aspectRatio
         pair.beforePhotoLocalIdentifier = localIdentifier
-        pair.beforeZoomFactor = settings.zoomFactor
+        pair.beforeZoomFactor = settings.zoomFactor ?? 1.0
         pair.beforeLensIdentifier = settings.lensPosition.rawValue
         pair.cameraSettings = settings
         pair.updatedAt = timestamp

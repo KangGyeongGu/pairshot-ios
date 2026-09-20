@@ -325,6 +325,7 @@ private final class HomeDeletionEnvironment {
             deletePairs: DeletePairsUseCase(pairRepo: repo, photoLibrary: photoLibrary),
             deleteAfterPhoto: DeleteAfterPhotoUseCase(pairRepo: repo, photoLibrary: photoLibrary),
             location: location,
+            photoLibrary: photoLibrary,
             immediateExport: immediateExport,
             appSettings: appSettings,
             thumbnailCache: thumbnailCache,

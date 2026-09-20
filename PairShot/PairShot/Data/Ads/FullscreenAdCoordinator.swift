@@ -18,6 +18,8 @@ actor FullscreenAdCoordinator {
     }
 }
 
+private nonisolated let defaultFullscreenAdCoordinator = FullscreenAdCoordinator()
+
 extension EnvironmentValues {
-    @Entry var fullscreenAdCoordinator: FullscreenAdCoordinator = .init()
+    @Entry var fullscreenAdCoordinator: FullscreenAdCoordinator = defaultFullscreenAdCoordinator
 }

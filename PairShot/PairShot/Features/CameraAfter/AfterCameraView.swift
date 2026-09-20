@@ -288,8 +288,13 @@ private nonisolated func decodeGhostImage(data: Data) -> DecodedGhost? {
         return nil
     }
     let upright = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
-    let degrees = ghostRotationDegrees()
-    let captureOrientation = captureOrientationFromEXIF(source.imageOrientation)
+    let degrees = GhostRotationRule.degrees(
+        pixelWidth: cgImage.width,
+        pixelHeight: cgImage.height,
+    )
+    let captureOrientation = degrees == 0
+        ? CameraOrientation.portrait
+        : captureOrientationFromEXIF(source.imageOrientation)
     return DecodedGhost(
         image: upright,
         rotationDegrees: degrees,
@@ -309,6 +314,8 @@ private nonisolated func captureOrientationFromEXIF(
     }
 }
 
-private nonisolated func ghostRotationDegrees() -> Double {
-    90
+nonisolated enum GhostRotationRule {
+    static func degrees(pixelWidth: Int, pixelHeight: Int) -> Double {
+        pixelHeight > pixelWidth ? 0 : 90
+    }
 }

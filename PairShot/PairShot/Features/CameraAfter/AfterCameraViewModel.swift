@@ -231,7 +231,11 @@ final class AfterCameraViewModel {
 
     private func restoreZoom(for pair: PhotoPair) async {
         guard !hasRestoredZoom else { return }
-        let target = pair.cameraSettings?.zoomFactor ?? 1.0
+        let target: Double = if let stored = pair.cameraSettings?.zoomFactor {
+            stored
+        } else {
+            await session.zoomSnapshot().firstSwitchOver
+        }
         await session.setZoomFactor(target)
         let actual = await session.currentZoomFactor
         pinchBaseFactor = actual

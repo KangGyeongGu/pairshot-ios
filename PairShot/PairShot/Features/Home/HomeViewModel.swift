@@ -76,6 +76,10 @@ final class HomeViewModel {
     var resolvedAlbumLabel: String?
     var showPaywall: Bool = false
     var didAutoResumeAfterCamera: Bool = false
+    var showAddPair: Bool = false
+    var addPairDrafts: [AddPairDraft] = []
+    var addPairErrorText: String?
+    var addPairSelectionLimit: Int?
 
     let pairRepo: PhotoPairRepository
     let albumRepo: AlbumRepository
@@ -84,6 +88,7 @@ final class HomeViewModel {
     let deleteCombinedExports: DeleteCombinedExportsUseCase
     let deletePairsKeepingCombined: DeletePairsKeepingCombinedUseCase
     let location: CoreLocationService
+    let photoLibrary: PhotoLibraryService
     let thumbnailCache: PhotoLibraryThumbnailCache
     let immediateExport: ImmediateExportService
     let appSettings: AppSettings
@@ -98,6 +103,7 @@ final class HomeViewModel {
         deletePairs: DeletePairsUseCase,
         deleteAfterPhoto: DeleteAfterPhotoUseCase,
         location: CoreLocationService,
+        photoLibrary: PhotoLibraryService,
         immediateExport: ImmediateExportService,
         appSettings: AppSettings,
         thumbnailCache: PhotoLibraryThumbnailCache,
@@ -115,6 +121,7 @@ final class HomeViewModel {
         self.deleteCombinedExports = deleteCombinedExports
         self.deletePairsKeepingCombined = deletePairsKeepingCombined
         self.location = location
+        self.photoLibrary = photoLibrary
         self.immediateExport = immediateExport
         self.appSettings = appSettings
         self.thumbnailCache = thumbnailCache

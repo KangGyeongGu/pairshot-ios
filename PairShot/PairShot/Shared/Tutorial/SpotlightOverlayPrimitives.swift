@@ -15,7 +15,7 @@ struct SpotlightDimmedMask: View {
     }
 }
 
-struct SpotlightHoleShape: Shape {
+nonisolated struct SpotlightHoleShape: Shape {
     let cutout: CGRect
     let cornerRadius: CGFloat
 
