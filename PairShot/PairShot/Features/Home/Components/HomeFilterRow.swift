@@ -6,30 +6,39 @@ struct HomeFilterRow: View {
     let onModeChange: (HomeContentMode) -> Void
     let onSortOrderChange: (HomeSortOrder) -> Void
 
+    @Environment(\.isEnabled) private var isEnabled
+    @Namespace private var segmentNamespace
+
     var body: some View {
+        Group {
+            if #available(iOS 26.0, *) {
+                GlassEffectContainer(spacing: 12) {
+                    row
+                }
+            } else {
+                row
+            }
+        }
+        .opacity(isEnabled ? 1 : 0.4)
+    }
+
+    private var row: some View {
         HStack(spacing: 12) {
-            modePicker
+            modeToggle
                 .frame(maxWidth: 220)
+                .modifier(HomeFilterControlGlass(shape: AnyShape(Capsule())))
             Spacer()
             sortMenu
+                .modifier(HomeFilterControlGlass(shape: AnyShape(Circle())))
         }
     }
 
-    private var modePicker: some View {
-        Picker(String(localized: "common_view_label"), selection: modeBinding) {
-            Text(String(localized: "home_filter_all")).tag(HomeContentMode.pairs)
-            Text(String(localized: "home_filter_album")).tag(HomeContentMode.albums)
+    private var modeToggle: some View {
+        HStack(spacing: 0) {
+            modeButton(.pairs, title: String(localized: "home_filter_all"))
+            modeButton(.albums, title: String(localized: "home_filter_album"))
         }
-        .pickerStyle(.segmented)
-    }
-
-    private var modeBinding: Binding<HomeContentMode> {
-        Binding(
-            get: { contentMode },
-            set: { newValue in
-                onModeChange(newValue)
-            },
-        )
+        .padding(4)
     }
 
     private var sortMenu: some View {
@@ -40,9 +49,9 @@ struct HomeFilterRow: View {
             }
         } label: {
             Image(systemName: "arrow.up.arrow.down")
-                .font(.headline)
-                .frame(minWidth: 44, minHeight: 44)
-                .contentShape(Rectangle())
+                .font(.subheadline.weight(.semibold))
+                .frame(width: 40, height: 40)
+                .contentShape(Circle())
         }
         .accessibilityLabel(String(localized: "common_sort_label"))
     }
@@ -54,5 +63,45 @@ struct HomeFilterRow: View {
                 onSortOrderChange(newValue)
             },
         )
+    }
+
+    private var segmentHighlight: some View {
+        Capsule()
+            .fill(Color.primary.opacity(0.12))
+            .matchedGeometryEffect(id: "segmentHighlight", in: segmentNamespace)
+    }
+
+    private func modeButton(_ mode: HomeContentMode, title: String) -> some View {
+        Button {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                onModeChange(mode)
+            }
+        } label: {
+            Text(title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(contentMode == mode ? Color.primary : Color.secondary)
+                .padding(.vertical, 6)
+                .frame(maxWidth: .infinity)
+                .background {
+                    if contentMode == mode {
+                        segmentHighlight
+                    }
+                }
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(contentMode == mode ? [.isSelected] : [])
+    }
+}
+
+private struct HomeFilterControlGlass: ViewModifier {
+    let shape: AnyShape
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.glassEffect(.regular.interactive(), in: shape)
+        } else {
+            content.background(.ultraThinMaterial, in: shape)
+        }
     }
 }
