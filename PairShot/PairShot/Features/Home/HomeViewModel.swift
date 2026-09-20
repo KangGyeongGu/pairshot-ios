@@ -1,8 +1,6 @@
 import CoreLocation
 import Foundation
 import Observation
-import PhotosUI
-import SwiftUI
 
 enum HomeContentMode: String, CaseIterable, Identifiable {
     case pairs

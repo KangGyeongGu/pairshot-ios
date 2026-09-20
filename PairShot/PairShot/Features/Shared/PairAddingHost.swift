@@ -18,7 +18,6 @@ protocol PairAddingHost: CaptureStarter {
     var addPairTargetAlbumId: UUID? { get }
 
     var photoLibrary: PhotoLibraryService { get }
-    var thumbnailCache: PhotoLibraryThumbnailCache { get }
     var albumRepo: AlbumRepository { get }
 }
 

@@ -1,7 +1,5 @@
 import Foundation
 import Observation
-import PhotosUI
-import SwiftUI
 
 struct AlbumDetailPairDeleteRequest: Identifiable {
     let id = UUID()
