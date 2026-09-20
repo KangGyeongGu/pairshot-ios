@@ -119,9 +119,15 @@ struct BeforeCameraCaptureFlowTests {
         let suiteName = "before-capture-flow-\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName) ?? .standard
         let settings = AppSettings(defaults: defaults)
+        let promotionStore = PromotionStore(
+            fetcher: PromotionFetcher(config: CouponApiConfig.resolve()),
+            deviceHashProvider: DeviceHashProvider(),
+            defaults: defaults,
+        )
         return AppEnvironment(
             modelContainer: makeContainer(),
             appSettings: settings,
+            promotionStore: promotionStore,
         )
     }
 
